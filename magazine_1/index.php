@@ -1,8 +1,36 @@
 <?php 
 include_once 'functions.php';
+include 'traitement.php';
 ?>
 
+<?php
+    $file_name = 'data.json';
+    
+        // Charger les données existantes depuis le fichier JSON s'il existe
+        $data0 = [];
+        if (file_exists($file_name)) {
+            $json_data_0 = file_get_contents($file_name);
+            $data0 = json_decode($json_data_0, true);
+            // Vérifier si les données sont null
+            if ($data0 === null) {
+                $data0 = [];
+            }
+        }
 
+        // Définir le titre de la page par défaut
+        $pageTitre = "Titre par défaut";
+
+        // Si des données existent dans le fichier JSON
+        if (!empty($data0)) {
+            // Récupérer les données du dernier élément du tableau
+            $derniere_entree = end($data0);
+            $title = isset($derniere_entree['titre']) ? $derniere_entree['titre'] : '';
+
+            // Utiliser le titre pour le titre de la page
+            $pageTitre = $title;
+        }
+         
+        ?>
 
 
 
@@ -21,7 +49,9 @@ include_once 'functions.php';
     <link rel="stylesheet" href="css/print.css" media="print">
     <link rel="stylesheet" href="css/cma-icones.css">
     <link rel="stylesheet" href="css/style.css">
-    <title><?php echo $pageTitre; ?></title>
+    <title><?= $pageTitre?></title>
+    
+ 
 </head>
 
 <!DOCTYPE html>
