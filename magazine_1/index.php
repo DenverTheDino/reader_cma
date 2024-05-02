@@ -9,12 +9,12 @@ include 'traitement.php';
         // Charger les données existantes depuis le fichier JSON s'il existe
         $data0 = [];
         if (file_exists($file_name)) {
-            $json_data_0 = file_get_contents($file_name);
-            $data0 = json_decode($json_data_0, true);
+            $json_data0= file_get_contents($file_name);
+            $data0 = json_decode($json_data0, true);
             // Vérifier si les données sont null
-            if ($data0 === null) {
-                $data0 = [];
-            }
+        
+            $data0= [];
+            
         }
 
         // Définir le titre de la page par défaut
@@ -29,7 +29,7 @@ include 'traitement.php';
             // Utiliser le titre pour le titre de la page
             $pageTitre = $title;
         }
-         
+          
         ?>
 
 
@@ -49,7 +49,8 @@ include 'traitement.php';
     <link rel="stylesheet" href="css/print.css" media="print">
     <link rel="stylesheet" href="css/cma-icones.css">
     <link rel="stylesheet" href="css/style.css">
-    <title><?= $pageTitre?></title>
+    <?php var_dump($pageTitre); ?> <!-- Ajoutez le var_dump ici -->
+    <title><?= $pageTitre ?></title>
     
  
 </head>
@@ -142,7 +143,7 @@ include 'traitement.php';
                 <span id="pageNumber">
                 
                 </span> 
-            <br><?php echo $pageTitre; ?></h1> 
+            <br><?php echo $pageTitle ?></h1> 
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
