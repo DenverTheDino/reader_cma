@@ -1,0 +1,37 @@
+
+
+    body {
+    margin:  auto; /* Marge automatique sur les côtés pour centrer le contenu */
+    width: 100%; /* Définir la largeur maximale à 100% */
+    max-width: 800px; /* Vous pouvez ajuster la largeur maximale selon vos besoins */
+    }      
+    .swiper .swiper-slide  {
+        margin-top: 50px;
+        padding: 0;
+        /* display: flex;
+        justify-content: center; */
+        max-width: 100%;
+        height: auto; /* Réduire la largeur maximale de l'image en mode portrait */
+        /* Assurer que la hauteur est ajustée proportionnellement à la largeur */
+    }
+    
+    .icon-miniatures{
+        display: none;
+    }
+    .header{
+        display: none;
+    }
+    .swiper-button-next{
+        display: none;
+    }
+    .swiper-button-prev{
+        display: none;
+    }
+    
+    
+    .footer__headband{
+        display: block;
+        
+        color: black !important;
+    }
+    

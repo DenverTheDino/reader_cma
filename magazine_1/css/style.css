@@ -1,0 +1,370 @@
+body,html{
+  margin: 0;
+  height: calc(100vh - 160px);
+  padding: 0;
+}
+/* Header */
+.header {
+  height: 100px;
+  padding: 10px;
+  background-color: #0F3250;
+  color: #FFFFFF;
+}
+
+.header__banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header__banner-icon{
+  font-size: 80px;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+
+.header__banner-picto ul {
+  list-style-type: none;
+  display: flex;
+}
+
+.header__banner-picto  li {
+  font-size: 40px;
+  color: #ffffff;
+  margin-right: 30px;
+}
+
+.dropdown-container {
+  position: relative; /* Positionnement relatif pour le conteneur du menu déroulant */ 
+  
+}
+
+.sous-menu {
+  display: none;
+  position: absolute;
+  background-color: #00141f; /* Couleur de fond du menu déroulant */
+  min-width: 250px; /* Largeur du menu déroulant */
+  height: auto;
+  z-index: 52; /* Assure que le menu déroulant apparaît au-dessus de tout */
+  left: -200px; /* Positionner le sous-menu à 120px à gauche de son conteneur */
+  margin-top: 20px;
+  padding-bottom: 10px;
+  flex-direction: column;
+  transition: display 0.3s ease;
+}
+.sous-menu ul{
+  margin: 0;
+  padding: 0;
+  
+}
+.sous-menu li {
+  display: flex; /* Utiliser Flexbox pour aligner les éléments sur la même ligne */
+  align-items: center; /* Centrer verticalement les éléments */
+  
+}
+
+.dropdown-container i{
+  display: block;
+  
+}
+.dropdown-container i:hover {
+  background-color: #00141f;
+}
+.sous-menu li p {
+  margin: 5px; /* Ajouter une marge à gauche du paragraphe */
+}
+
+
+
+.sous-menu li p{
+  font-size: 20px;
+}
+.sous-menu li i{
+  font-size: 20px;
+}
+#sousMenuShare {
+  display: flex;
+  flex-direction: column;
+}
+
+.sousMenuShare li {
+  display: flex;
+  flex-direction: column; /* Afficher les éléments li en colonne */
+  align-items: center;
+  font-size: 20px;
+  min-width: 200px; /* Ajustez cette valeur selon vos besoins */
+}
+.sousMenuShare i{
+  font-size: 20px;
+  color: white;
+}
+.sousMenuShare li i,
+.sousMenuShare li p {
+  display: inline-flex; /* Afficher l'icône et le texte sur la même ligne */
+  font-size: 18px;
+  flex-shrink: 1; /* Permettre à l'élément de réduire sa taille si nécessaire */
+}
+
+#shareFacebookBtn,
+#shareLinkedInBtn,
+#shareTwitterBtn {
+  display: none;
+}
+/* Style des éléments du sous-menu */
+
+#swiper-wrapper {
+  z-index: 10;
+  width: 100%;
+  height: 100%; /* La hauteur du Swiper - la hauteur des miniatures */
+  display: flex; /* Utilise un modèle de boîte flexible */
+}
+/* slider swiper principal */
+.swiper .swiper-zoom-container {
+  width: 100%;
+  height: 100%;
+  
+  
+}
+.visible {
+  display: flex; /* Pour forcer l'affichage des miniatures */
+  margin: 0;
+  padding: 0;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background-color: #b8b8b8;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+.dark-mode{
+  background-color: black;
+}
+
+.swiper-zoom-container img{
+  width: 100%;
+  height: auto;
+}
+.swiper-zoom-container img:hover{
+  cursor: zoom-in;
+}
+
+.custom-progress .swiper-pagination-progressbar-fill{
+  background-color: #A8131D;
+}
+.custom-progress{
+  background-color: #B0D2D9;
+}
+
+/* slider thumbails */
+.swiper-container {
+  position: absolute;
+  
+}
+
+.mySwiper2 {
+  position: relative;
+  z-index: 2; /* Assurez-vous que le swiper de miniatures est en arrière-plan */
+  padding-bottom: 10px;
+  padding-top: 10px;
+  width: 150px;
+  display: none; /*Cachez initialement le swiper de miniatures */
+  width: 100%;
+  transform: translateY(-100%);
+  opacity: 0.9;
+  overflow-x: hidden; /* Empêcher le débordement horizontal */
+}
+.icon-miniatures {
+  background-color: #b8b8b8;
+  border-radius: 50%; /* Assurez-vous que le border-radius soit la moitié de la taille de l'icône pour obtenir un cercle */
+  font-size: 40px;
+  position: fixed;
+  bottom: 40px; /* Ajustez cette valeur selon votre préférence */
+  right: 40px; /* Ajustez cette valeur selon votre préférence */
+  z-index: 99;
+  border: 2px solid #b8b8b8; /* Ajoutez une bordure blanche */
+  padding: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #0F3250;
+  -webkit-box-shadow: -3px 8px 13px 4px rgba(0,0,0,0.52); 
+  box-shadow: -3px 8px 13px 4px rgba(0,0,0,0.52);
+}
+
+.mySwiper2 .swiper-slide{
+  background-color: transparent;
+  
+}
+.mySwiper2 .swiper-slide img {
+  width: auto;
+  height: 200px;
+  /* margin: auto; */
+  
+}
+.mySwiper2 .swiper-slide{
+  margin-right: 10px;
+  padding-left: 5px;
+  /* width: 25%; */
+}
+
+
+.swiper-button-next {
+  color: #A8131D;
+}
+.swiper-button-prev{
+  color: #A8131D;
+}
+
+
+/* .mySwiper2 .swiper-slide-thumb-active {
+  opacity: 0.7;
+} */
+/* footer */
+.footer__headband{
+  position: fixed; /* Positionnement fixe pour rester en bas de la page */
+  bottom: 0; /* Alignement en bas */
+  width: 100%; /* Largeur totale */
+  height: 40px; /* Hauteur du footer */
+  background-color: #0F3250; /* Couleur de fond */
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 7px;
+  z-index: 999; /* Assurez-vous que le footer reste au-dessus des autres éléments */
+}
+
+
+
+@media (max-width: 480px) {
+  /* Body */
+  body {
+    height: calc(100vh - 100px);
+    transition: height 0.3s ease;
+  }
+  
+  /* Header */
+  .header {
+    height: 70px;
+    padding: 5px;
+    transition: height 0.3s ease, padding 0.3s ease;
+  }
+  
+  .header__banner-icon {
+    font-size: 50px;
+    margin-left: 5px;
+    transition: font-size 0.3s ease, margin 0.3s ease;
+  }
+  
+  .header__banner-picto li {
+    font-size: 30px;
+    margin-right: 15px;
+    transition: font-size 0.3s ease, margin 0.3s ease;
+  }
+  
+  /* Sous-menu */
+  .sous-menu {
+    
+    padding: 0;
+    transition: opacity 0.3s ease;
+  }
+  .sous-menu i{
+    margin: 20px;
+  }
+  
+  /* Swiper */
+  .swiper-container {
+    position: absolute;
+    height: 75%;
+  }
+  
+  .mySwiper2 {
+    position: relative;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ajustez selon vos préférences */
+    opacity: 1;
+    overflow-x: hidden;
+    transform: translateY(-100%);
+    padding-bottom: 40px;
+    margin: 10px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .icon-miniatures {
+    font-size: 20px;
+    transition: font-size 0.3s ease;
+  }
+  
+  .swiper .swiper-slide {
+    height: 100%;
+    width: 50%;
+  }
+  
+  .mySwiper2 .swiper-slide {
+    background-color: transparent;
+    margin-right: 5px;
+    padding: 0;
+    margin-bottom: 30px;
+  }
+  
+  .mySwiper2 .swiper-slide img {
+    width: auto;
+    max-height: 100px;
+  }
+  
+  .swiper-slide img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Footer */
+  .footer__headband {
+    height: 40px;
+    font-size: 7px;
+    margin-top: 10px;
+    transition: height 0.3s ease, font-size 0.3s ease, margin 0.3s ease;
+  }
+}
+
+
+
+
+@media (min-width: 481px) and (max-width: 880px) {
+  .header__banner-icon {
+    font-size: 70px;
+    margin-left: 5px;
+    transition: font-size 0.3s ease, margin 0.3s ease;
+  }
+
+  .header__banner-picto li {
+    font-size: 40px;
+    margin-right: 20px;
+    transition: font-size 0.3s ease, margin 0.3s ease;
+  }
+
+  .mySwiper2 .swiper-slide {
+    width: auto;
+    height: auto;
+    margin-right: 50px;
+    transition: width 0.3s ease, height 0.3s ease, margin-right 0.3s ease;
+  }
+
+  .icon-miniatures {
+    font-size: 30px; /* Réduire la taille de l'icône */
+    bottom: 40px; /* Ajuster cette valeur selon votre préférence */
+    right: 40px; /* Ajuster cette valeur selon votre préférence */
+    
+    transition: font-size 0.3s ease, bottom 0.3s ease, right 0.3s ease, border 0.3s ease;
+  }
+}
+
+
+
+
+
