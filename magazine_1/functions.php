@@ -151,3 +151,54 @@ $json_data_2 = json_encode($chemins_images_avif_2);
 
 
 
+<?php
+// Chemin du fichier JSON
+$file_name = 'data.json';
+
+// Vérifier si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer le titre du formulaire
+    $title = isset($_POST['title']) ? $_POST['title'] : '';
+
+    // Charger les données existantes depuis le fichier JSON s'il existe
+    $data0 = [];
+    if (file_exists($file_name)) {
+        $json_data0 = file_get_contents($file_name);
+        $data0 = json_decode($json_data0, true);
+        // Vérifier si les données sont null
+    }
+
+    // Ajouter les données du titre au tableau de données
+    $data0[] = ['titre' => $title];
+
+    // Convertir les données en format JSON
+    $json_data0 = json_encode($data0, JSON_PRETTY_PRINT);
+
+    // Écrire les données JSON dans un fichier
+    file_put_contents($file_name, $json_data0);
+
+    // Rediriger l'utilisateur vers la page du formulaire
+    header("Location: formulaire.php");
+    exit;
+}
+
+// Charger les données existantes depuis le fichier JSON s'il existe
+$data0 = [];
+if (file_exists($file_name)) {
+    $json_data0 = file_get_contents($file_name);
+    $data0 = json_decode($json_data0, true);
+}
+
+// Définir le titre de la page par défaut
+$pageTitre = "";
+
+// Si des données existent dans le fichier JSON
+if ($data0) {
+    // Récupérer les données du dernier élément du tableau
+    $derniere_entree = end($data0);
+    $title = isset($derniere_entree['titre']) ? $derniere_entree['titre'] : '';
+
+    // Utiliser le titre pour le titre de la page
+    $pageTitre = $title;
+}
+?>

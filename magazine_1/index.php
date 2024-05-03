@@ -1,36 +1,8 @@
 <?php 
 include_once 'functions.php';
-include 'traitement.php';
+
 ?>
 
-<?php
-    $file_name = 'data.json';
-    
-        // Charger les données existantes depuis le fichier JSON s'il existe
-        $data0 = [];
-        if (file_exists($file_name)) {
-            $json_data0= file_get_contents($file_name);
-            $data0 = json_decode($json_data0, true);
-            // Vérifier si les données sont null
-        
-            $data0= [];
-            
-        }
-
-        // Définir le titre de la page par défaut
-        $pageTitre = "Titre par défaut";
-
-        // Si des données existent dans le fichier JSON
-        if (!empty($data0)) {
-            // Récupérer les données du dernier élément du tableau
-            $derniere_entree = end($data0);
-            $title = isset($derniere_entree['titre']) ? $derniere_entree['titre'] : '';
-
-            // Utiliser le titre pour le titre de la page
-            $pageTitre = $title;
-        }
-          
-        ?>
 
 
 
@@ -49,8 +21,8 @@ include 'traitement.php';
     <link rel="stylesheet" href="css/print.css" media="print">
     <link rel="stylesheet" href="css/cma-icones.css">
     <link rel="stylesheet" href="css/style.css">
-    <?php var_dump($pageTitre); ?> <!-- Ajoutez le var_dump ici -->
-    <title><?= $pageTitre ?></title>
+ 
+    <title><?= $pageTitre; ?></title>
     
  
 </head>
@@ -143,7 +115,7 @@ include 'traitement.php';
                 <span id="pageNumber">
                 
                 </span> 
-            <br><?php echo $pageTitle ?></h1> 
+            <br><?= $pageTitre; ?></h1> 
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

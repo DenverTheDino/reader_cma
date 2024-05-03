@@ -1,4 +1,5 @@
-<?php include'traitement.php';
+<?php
+include_once 'functions.php'
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +11,7 @@
 </head>
 <body>
     <h2>Formulaire pour JSON</h2>
-    <form action="traitement.php" method="post">
+    <form action="formulaire.php" method="post">
         <label for="titre">Titre :</label>
         <input type="text" id="title" name="title" required><br>
         
