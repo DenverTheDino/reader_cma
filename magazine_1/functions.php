@@ -201,4 +201,29 @@ if ($data0) {
     // Utiliser le titre pour le titre de la page
     $pageTitre = $title;
 }
+
+// Définir la valeur de la variable $pageTitre
+$pageTitre = "";
+
+// Si des données existent dans le fichier JSON
+if ($data0) {
+    // Récupérer les données du dernier élément du tableau
+    $derniere_entree = end($data0);
+    $title = isset($derniere_entree['titre']) ? $derniere_entree['titre'] : '';
+
+    // Utiliser le titre pour le titre de la page
+    $pageTitre = $title;
+}
+
+
+// Encodez le titre avec urlencode
+$pageTitreUrl = urlencode($title);
+
+// URL de base avec les parties variables à remplacer
+$baseURL = "http://localhost/{$pageTitreUrl}/#slide1";
+
+// Afficher la nouvelle URL
+echo $baseURL;
 ?>
+
+

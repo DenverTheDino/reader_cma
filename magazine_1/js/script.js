@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
           // Obtenez l'index du slide actuellement affiché
           var currentSlideIndex = this.realIndex;
           
-           window.location.hash = "slide" + (currentSlideIndex + 1);
+          window.location.hash = "slide" + (currentSlideIndex + 1);
           
           // Mise à jour du numéro de page
           updatePageNumber(currentSlideIndex + 1, this.slides.length);
@@ -77,8 +77,6 @@ if (Array.isArray(imagesData)) {
     imagesData.forEach(function(image, index) {
         var slide = document.createElement('div');
         slide.classList.add('swiper-slide');
-        
-        slide.setAttribute('data-hash', 'page'  + (index + 1));
 
         var zoom = document.createElement('div');
         zoom.classList.add('swiper-zoom-container');
