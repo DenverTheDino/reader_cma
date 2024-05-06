@@ -1,10 +1,6 @@
-
-
-
 <?php
 
 // Fonction php pour pouvoir modifier les images .jpeg en .avif et les envoyés dans le dossier pages
-
 
 // Chemin du dossier contenant les images JPEG
 $dossier_jpeg = 'miniatures/sources/';
@@ -45,12 +41,8 @@ foreach ($images_jpeg as $image_jpeg) {
         // echo "L'image AVIF $nom_image existe déjà.\n";
     }
 }
-?>
 
-<?php
 //  Recupération des images dans le dossier pages et les redimmensionné grace a GD pour les ajouter dans le dossier thumbails
-
-
 
 // Dossier contenant les images originales AVIF
 $dossierOrigine = "miniatures/pages/";
@@ -64,7 +56,6 @@ $nouvelleHauteur = 256;
 // Obtenir la liste des fichiers AVIF dans le dossier d'origine
 $imagesOriginales = glob($dossierOrigine . "*.avif");
 
-// Parcourir chaque image et redimensionner puis transférer si elle n'existe pas déjà dans le dossier de destination
 // Parcourir chaque image et redimensionner puis transférer si elle n'existe pas déjà dans le dossier de destination
 foreach ($imagesOriginales as $imageOriginale) {
     // Nom de l'image dans le dossier de destination
@@ -149,8 +140,6 @@ foreach ($images_avif_2 as $image_avif_2) {
 $json_data_2 = json_encode($chemins_images_avif_2);
 ?>
 
-
-
 <?php
 // Chemin du fichier JSON
 $file_name = 'data.json';
@@ -215,7 +204,6 @@ if ($data0) {
     $pageTitre = $title;
 }
 
-
 // Encodez le titre avec urlencode
 $pageTitreUrl = urlencode($title);
 
@@ -224,6 +212,5 @@ $baseURL = "http://localhost/{$pageTitreUrl}/#slide1";
 
 // Afficher la nouvelle URL
 echo $baseURL;
+
 ?>
-
-

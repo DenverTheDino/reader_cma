@@ -17,27 +17,6 @@ include_once 'functions.php';
     <link rel="stylesheet" href="css/print.css" media="print">
     <link rel="stylesheet" href="css/cma-icones.css">
     <link rel="stylesheet" href="css/style.css">
- 
-    <title><?= $pageTitre; ?></title>
-    
- 
-</head>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Ajout font Montserrat et Roboto Slab -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&family=Roboto+Slab&display=swap" rel="stylesheet">
-    <!-- Ajout CDN Swiper -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <!-- ajout css ajouté  -->
-    <link rel="stylesheet" href="css/print.css" media="print">
-    <link rel="stylesheet" href="css/cma-icones.css">
-    <link rel="stylesheet" href="css/style.css">
     <title><?php echo $pageTitre; ?></title>
 </head>
 <body id="body">
@@ -128,6 +107,7 @@ include_once 'functions.php';
 
     <!-- Inclure votre script JavaScript -->
     <script src="js/script.js"></script>
+    
 </body>
 
 </html>
