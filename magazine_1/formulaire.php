@@ -13,7 +13,7 @@ include_once 'functions.php'
     <h2>Formulaire pour JSON</h2>
     <form action="formulaire.php" method="post">
         <label for="titre">Titre :</label>
-        <input type="text" id="title" name="title" required><br>
+        <input type="text" id="title" name="title"><br>
         
         <input type="submit" value="Enregistrer le titre">
     </form>

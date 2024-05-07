@@ -106,7 +106,8 @@ include_once 'functions.php';
     </script>
 
     <!-- Inclure votre script JavaScript -->
-    <script src="js/script.js"></script>
+    <script src="js/script.js" async></script>
+    
     
 </body>
 
