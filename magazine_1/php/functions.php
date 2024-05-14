@@ -191,16 +191,4 @@ if ($data0) {
     $pageTitre = $title;
 }
 
-// Définir la valeur de la variable $pageTitre
-$pageTitre = "";
-
-// Si des données existent dans le fichier JSON
-if ($data0) {
-    // Récupérer les données du dernier élément du tableau
-    $derniere_entree = end($data0);
-    $title = isset($derniere_entree['titre']) ? $derniere_entree['titre'] : '';
-
-    // Utiliser le titre pour le titre de la page
-    $pageTitre = $title;
-}
-?>
+$urlpage =  urlencode($title)

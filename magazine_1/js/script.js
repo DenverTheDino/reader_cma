@@ -1,3 +1,5 @@
+
+
 // Déclaration de la variable pour le Swiper
 var mySwiper;
 
@@ -44,10 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Événements du Swiper principal
         on: {
             slideChange: function() {
-            var currentSlideIndex = this.realIndex;
-        
-            updatePageNumber(currentSlideIndex + 1, this.slides.length);
-        },
+                var currentSlideIndex = this.realIndex;
+                updatePageNumber(currentSlideIndex + 1, this.slides.length);
+                // Mettre à jour l'URL en fonction de la diapositive actuelle
+                history.replaceState(null, null, '?slide=' + (currentSlideIndex + 1));
+            },
             init: function() {
                 // Mise à jour du numéro de page à l'initialisation
                 updatePageNumber(1, this.slides.length);

@@ -20,9 +20,7 @@ if(isset($_FILES['file'])) {
     }
 }
 ?>
-<?php
-phpinfo();
-?>
+
 
 
 <!DOCTYPE html>
