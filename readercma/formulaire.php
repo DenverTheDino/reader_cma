@@ -1,6 +1,6 @@
 <?php
-include_once 'php/functions.php'
-// Vérifie si un fichier a été téléchargé
+include_once 'functions.php'
+
 
 ?>
 
