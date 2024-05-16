@@ -1,5 +1,0 @@
-RewriteEngine On
-RewriteBase /
-
-# Réécriture de l'URL pour retirer "readercma"
-RewriteRule ^readercma/(.*)$ /$1 [L,R=301]
