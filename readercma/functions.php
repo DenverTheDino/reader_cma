@@ -1,149 +1,226 @@
 <?php
-// Récupérer le titre du formulaire et le fichier PDF téléchargé
-$title = $_POST['title']; 
-$pdf_file = $_FILES['pdf']; 
 
-// Chemin du dossier principal où les dossiers seront créés
-$main_dir = 'readercma/support'; 
+// Fonction php pour pouvoir modifier les images .jpeg en .avif et les envoyés dans le dossier pages
 
-// Appeler la fonction pour créer un nouveau dossier et déplacer le PDF
-$new_directory = createDirectoryAndMovePdf($main_dir, $pdf_file, $title);
+// Chemin du dossier contenant les images JPEG
+$dossier_jpeg = 'rapport-d-activite-2023/sources/';
 
-// Si le dossier a été créé avec succès
-if ($new_directory !== null) {
-    // Appeler la fonction pour traiter les dossiers (conversion, redimensionnement, etc.)
-    processDirectories($main_dir);
-}
-// Fonction pour convertir PDF en JPEG avec Imagick
-function convertPdfToJpeg($pdf_path, $output_dir) {
-    $imagick = new Imagick();
-    $imagick->setResolution(300, 300); // Définir la résolution du PDF (dpi)
-    $imagick->readImage($pdf_path);
+// Chemin du dossier où les images AVIF seront enregistrées
+$dossier_avif = 'rapport-d-activite-2023/pages/';
 
-    foreach ($imagick as $index => $page) {
-        $page->setImageFormat('jpeg');
-        $jpeg_path = $output_dir . '/' . basename($pdf_path, '.pdf') . "_page_" . ($index + 1) . '.jpg';
-        $page->writeImage($jpeg_path);
-    }
-    $imagick->clear();
-    $imagick->destroy();
-}
+// Liste des fichiers JPEG dans le dossier
+$images_jpeg = glob($dossier_jpeg . '*.jpg');
 
-// Fonction pour convertir JPEG en AVIF avec GD
-function convertJpegToAvif($jpeg_path, $avif_path) {
-    $image = imagecreatefromjpeg($jpeg_path);
-    if (function_exists('imageavif')) {
-        imageavif($image, $avif_path);
-    } else {
-        // Si la fonction imageavif n'est pas disponible, utiliser une autre méthode
-        ob_start();
-        imagegd($image);
-        $gd_image_data = ob_get_clean();
-        file_put_contents($avif_path, $gd_image_data);
-    }
-    imagedestroy($image);
-}
+// Boucler à travers chaque image JPEG
+foreach ($images_jpeg as $image_jpeg) {
+    // Nom de l'image sans extension
+    $nom_image = pathinfo($image_jpeg, PATHINFO_FILENAME);
 
-// Fonction pour redimensionner l'image avec GD
-function resizeImage($input_path, $output_path, $new_height) {
-    $image = imagecreatefromavif($input_path);
-    $original_width = imagesx($image);
-    $original_height = imagesy($image);
-    $new_width = ($new_height / $original_height) * $original_width;
+    // Chemin de l'image AVIF
+    $chemin_image_avif = $dossier_avif . $nom_image . '.avif';
 
-    $new_image = imagecreatetruecolor($new_width, $new_height);
-    imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $original_width, $original_height);
+    // Vérifier si l'image AVIF n'existe pas déjà
+    if (!file_exists($chemin_image_avif)) {
+        // Charger l'image JPEG
+        $image = imagecreatefromjpeg($image_jpeg);
 
-    imageavif($new_image, $output_path);
-
-    imagedestroy($image);
-    imagedestroy($new_image);
-}
-
-// Fonction pour créer un nouveau dossier avec le titre du formulaire et déplacer le PDF téléchargé
-function createDirectoryAndMovePdf($main_dir, $pdf_file, $title) {
-    // Supprimer les espaces et convertir en minuscules
-    $directory_name = strtolower(str_replace(' ', '-', $title));
-    
-    $new_dir = $main_dir . '/' . $directory_name;
-    
-    // Vérifier si le dossier existe déjà
-    if (!is_dir($new_dir)) {
-        // Créer le nouveau dossier
-        if (mkdir($new_dir, 0777, true)) {
-            // Créer le sous-dossier "pdf" s'il n'existe pas déjà
-            $pdf_dir = $new_dir . '/pdf';
-            if (!is_dir($pdf_dir)) {
-                mkdir($pdf_dir, 0777, true);
+        // Convertir l'image en AVIF
+        if (function_exists('imageavif')) {
+            if (imageavif($image, $chemin_image_avif)) {
+                // echo "L'image $nom_image a été convertie en AVIF avec succès.\n";
+            } else {
+                // echo "La conversion de l'image $nom_image en AVIF a échoué.\n";
             }
-            
-            // Déplacer le PDF téléchargé dans le dossier "pdf"
-            $pdf_path = $pdf_dir . '/' . basename($pdf_file['name']);
-            move_uploaded_file($pdf_file['tmp_name'], $pdf_path);
-            
-            echo "Le dossier '$directory_name' a été créé avec succès.";
-            return $new_dir; // Retourner le chemin du nouveau dossier créé
         } else {
-            echo "Erreur lors de la création du dossier.";
+        //     echo "La fonction imageavif n'est pas disponible. Assurez-vous que l'extension AVIF est installée.\n";
+         }
+
+        // Libérer la mémoire de l'image GD
+        imagedestroy($image);
+    } else {
+        // echo "L'image AVIF $nom_image existe déjà.\n";
+    }
+}
+
+//  Recupération des images dans le dossier pages et les redimmensionné grace a GD pour les ajouter dans le dossier thumbails
+
+// Dossier contenant les images originales AVIF
+$dossierOrigine = "rapport-d-activite-2023/pages/";
+
+// Dossier de destination pour les images redimensionnées
+$dossierDestination = "rapport-d-activite-2023/thumbails/";
+
+// Définir la hauteur souhaitée pour les images redimensionnées
+$nouvelleHauteur = 256;
+
+// Obtenir la liste des fichiers AVIF dans le dossier d'origine
+$imagesOriginales = glob($dossierOrigine . "*.avif");
+
+// Parcourir chaque image et redimensionner puis transférer si elle n'existe pas déjà dans le dossier de destination
+foreach ($imagesOriginales as $imageOriginale) {
+    // Nom de l'image dans le dossier de destination
+    $nomImage = basename($imageOriginale);
+
+    // Vérifier si l'image existe déjà dans le dossier de destination
+    if (!file_exists($dossierDestination . $nomImage)) {
+        // Créer une ressource d'image pour l'image AVIF
+        $image = imagecreatefromavif($imageOriginale);
+
+        // Obtenir les dimensions de l'image originale
+        $largeurOriginale = imagesx($image);
+        $hauteurOriginale = imagesy($image);
+
+        // Calculer la nouvelle largeur en maintenant le ratio
+        $ratio = $hauteurOriginale / $nouvelleHauteur;
+        $nouvelleLargeur = $largeurOriginale / $ratio;
+
+        // Créer une nouvelle image avec les dimensions spécifiées
+        $nouvelleImage = imagecreatetruecolor($nouvelleLargeur, $nouvelleHauteur);
+
+        // Redimensionner l'image originale vers la nouvelle image
+        imagecopyresampled($nouvelleImage, $image, 0, 0, 0, 0, $nouvelleLargeur, $nouvelleHauteur, $largeurOriginale, $hauteurOriginale);
+
+        // Sauvegarder l'image redimensionnée dans le dossier de destination
+        $cheminDestination = $dossierDestination . $nomImage;
+        imageavif($nouvelleImage, $cheminDestination);
+
+        // Libérer la mémoire en supprimant les ressources d'image
+        imagedestroy($image);
+        imagedestroy($nouvelleImage);
+
+        // echo "L'image $nomImage a été redimensionnée et transférée avec succès vers : $cheminDestination<br>";
+    } else {
+        // echo "L'image $nomImage existe déjà dans le dossier de destination. Passant à l'image suivante.<br>";
+    }
+}
+
+// echo "Toutes les images ont été vérifiées et les nouvelles ont été redimensionnées et transférées si nécessaire.";
+
+?>
+
+<!-- recupération des images .avif du dossier pages et les encodés en JSON -->
+<?php
+// Chemin du dossier où les images AVIF seront enregistrées
+$dossier_avif = 'rapport-d-activite-2023/pages/';
+
+// Liste des fichiers AVIF dans le dossier
+$images_avif = glob($dossier_avif . '*.avif');
+
+// Tableau pour stocker les chemins des images AVIF
+$chemins_images_avif = array();
+
+// Boucler à travers chaque image AVIF
+foreach ($images_avif as $image_avif) {
+    // Ajouter le chemin de l'image AVIF au tableau
+    $chemins_images_avif[] = $dossier_avif . basename($image_avif);
+}
+
+// Encoder le tableau des chemins d'images AVIF en JSON
+$json_data = json_encode($chemins_images_avif);
+?>
+
+
+<?php
+// Chemin du dossier où les images AVIF seront enregistrées pour le deuxième Swiper
+$dossier_avif_2 = 'rapport-d-activite-2023/thumbails/';
+
+// Liste des fichiers AVIF dans le dossier pour le deuxième Swiper
+$images_avif_2 = glob($dossier_avif_2 . '*.avif');
+
+// Tableau pour stocker les chemins des images AVIF pour le deuxième Swiper
+$chemins_images_avif_2 = array();
+
+// Boucler à travers chaque image AVIF pour le deuxième Swiper
+foreach ($images_avif_2 as $image_avif_2) {
+    // Ajouter le chemin de l'image AVIF au tableau pour le deuxième Swiper
+    $chemins_images_avif_2[] = $dossier_avif_2 . basename($image_avif_2);
+}
+
+// Encoder le tableau des chemins d'images AVIF en JSON pour le deuxième Swiper
+$json_data_2 = json_encode($chemins_images_avif_2);
+?>
+
+<?php
+// Chemin vers le fichier JSON
+$file_name = 'data.json';
+
+// Vérifier si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer le titre du formulaire
+    $title = isset($_POST['title']) ? trim($_POST['title']) : '';
+
+    // Charger les données existantes depuis le fichier JSON s'il existe
+    $data0 = [];
+    if (file_exists($file_name)) {
+        $json_data0 = file_get_contents($file_name);
+        $data0 = json_decode($json_data0, true);
+        // Vérifier si les données sont nulles à cause d'une erreur de décodage
+        if (is_null($data0)) {
+            $data0 = [];
+        }
+    }
+
+    // Générer un nouvel ID unique pour la nouvelle entrée
+    $new_id = count($data0) + 1;
+
+    // Ajouter le nouveau titre avec un ID unique au tableau de données
+    $data0[] = ['id' => $new_id, 'titre' => $title];
+
+    // Convertir les données en format JSON
+    $json_data0 = json_encode($data0, JSON_PRETTY_PRINT);
+
+    // Écrire les données JSON dans le fichier
+    if (file_put_contents($file_name, $json_data0) === false) {
+        // Gérer l'erreur si l'écriture dans le fichier échoue
+        die('Erreur lors de l\'écriture dans le fichier JSON');
+    }
+
+    // Rediriger l'utilisateur vers la page du formulaire
+    header("Location: formulaire.php");
+    exit;
+}
+
+$id = 1; // Vous pouvez remplacer cette valeur par celle que vous souhaitez utiliser dynamiquement
+
+// Charger les données existantes depuis le fichier JSON s'il existe
+$data0 = [];
+if (file_exists($file_name)) {
+    $json_data0 = file_get_contents($file_name);
+    $data0 = json_decode($json_data0, true);
+    // Vérifier si les données sont nulles à cause d'une erreur de décodage
+    if (is_null($data0)) {
+        $data0 = [];
+    }
+}
+
+// Initialiser le titre de la page par défaut
+$pageTitre = "";
+
+// Vérifier si un ID est passé dans l'URL pour récupérer une entrée spécifique
+foreach ($data0 as $entree) {
+    if ($entree['id'] == $id) {
+        $pageTitre = htmlspecialchars($entree['titre'], ENT_QUOTES, 'UTF-8');
+        break;
+    }
+}
+
+// Gestion du téléchargement de fichiers
+if (isset($_FILES['file'])) {
+    $file = $_FILES['file'];
+
+    // Vérifie s'il y a des erreurs lors du téléchargement
+    if ($file['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'supports/images//pdf/';
+        $uploadPath = $uploadDir . basename($file['name']);
+
+        // Déplace le fichier téléchargé vers le dossier de destination
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            echo 'Fichier ' . htmlspecialchars($file['name'], ENT_QUOTES, 'UTF-8') . ' téléchargé avec succès.';
+        } else {
+            echo 'Une erreur est survenue lors de l\'enregistrement du fichier.';
         }
     } else {
-        echo "Le dossier '$directory_name' existe déjà.";
+        echo 'Une erreur est survenue lors du téléchargement du fichier.';
     }
-    return null; // Retourner null si une erreur s'est produite
 }
-
-// Fonction principale pour traiter les dossiers
-function processDirectories($main_dir) {
-    // Récupérer tous les sous-dossiers dynamiquement
-    $sub_dirs = glob($main_dir . '/*', GLOB_ONLYDIR);
-
-    foreach ($sub_dirs as $sub_dir) {
-        $pdf_dir = $sub_dir . '/pdf';
-        $jpeg_dir = $sub_dir . '/images';
-        $avif_dir = $sub_dir . '/pages';
-        $thumbs_dir = $sub_dir . '/thumbnails';
-
-        // Créer les dossiers s'ils n'existent pas
-        if (!file_exists($jpeg_dir)) mkdir($jpeg_dir, 0777, true);
-        if (!file_exists($avif_dir)) mkdir($avif_dir, 0777, true);
-        if (!file_exists($thumbs_dir)) mkdir($thumbs_dir, 0777, true);
-
-        // Convertir PDF en JPEG
-        $pdf_files = glob($pdf_dir . '/*.pdf');
-        foreach ($pdf_files as $pdf_file) {
-            convertPdfToJpeg($pdf_file, $jpeg_dir);
-        }
-
-        // Convertir JPEG en AVIF
-        $jpeg_files = glob($jpeg_dir . '/*.jpg');
-        foreach ($jpeg_files as $jpeg_file) {
-            $avif_path = $avif_dir . '/' . basename($jpeg_file, '.jpg') . '.avif';
-            convertJpegToAvif($jpeg_file, $avif_path);
-        }
-
-        // Redimensionner les images AVIF pour créer des vignettes
-        $avif_files = glob($avif_dir . '/*.avif');
-        foreach ($avif_files as $avif_file) {
-            $thumb_path = $thumbs_dir . '/' . basename($avif_file);
-            resizeImage($avif_file, $thumb_path, 256); // Taille de vignette souhaitée
-        }
-    }
-
-    echo "Traitement terminé pour tous les dossiers.";
-}
-
-
-
-// Fonction pour nettoyer le titre et le convertir en un nom de dossier valide
-function slugify($text) {
-    // Remplacer les caractères non-lettres ou chiffres par un tiret
-    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-    // Translitérer (convertir les accents en lettres simples)
-    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-    // Supprimer les caractères indésirables
-    $text = preg_replace('~[^-\w]+~', '', $text);
-
-    
-}
+?>

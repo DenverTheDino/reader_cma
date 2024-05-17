@@ -1,6 +1,6 @@
 <?php 
 include_once 'functions.php';
-
+phpinfo();
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +107,7 @@ include_once 'functions.php';
     </script>
 
     <!-- Inclure votre script JavaScript -->
-    <script src="js/script.js" async ></script>
+    <script src="script.js" ></script>
     
     
 </body>
