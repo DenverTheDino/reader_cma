@@ -103,3 +103,22 @@ if (isset($_GET['id'])) {
     echo "L'ID n'est pas spécifié dans l'URL.";
 }
 ?>
+<?php
+// Chemin du dossier où les images AVIF seront enregistrées pour le deuxième Swiper
+$dossier_avif_2 = 'rapport-d-activite-2023/thumbails/';
+
+// Liste des fichiers AVIF dans le dossier pour le deuxième Swiper
+$images_avif_2 = glob($dossier_avif_2 . '*.avif');
+
+// Tableau pour stocker les chemins des images AVIF pour le deuxième Swiper
+$chemins_images_avif_2 = array();
+
+// Boucler à travers chaque image AVIF pour le deuxième Swiper
+foreach ($images_avif_2 as $image_avif_2) {
+    // Ajouter le chemin de l'image AVIF au tableau pour le deuxième Swiper
+    $chemins_images_avif_2[] = $dossier_avif_2 . basename($image_avif_2);
+}
+
+// Encoder le tableau des chemins d'images AVIF en JSON pour le deuxième Swiper
+$json_data_2 = json_encode($chemins_images_avif_2);
+?>
