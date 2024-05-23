@@ -1,22 +1,6 @@
 <?php 
 include_once 'functions.php';
-
-
-// Récupérer l'ID depuis l'URL
-$id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-
-// Récupérer les données JSON à partir du fichier data.json
-$data= file_get_contents('data.json');
-$data= json_decode($data, true);
-
-// Vérifier si l'ID correspond à une entrée dans le JSON
-if (isset($data[$id]['title'])) {
-    // Utiliser le titre pour définir la balise <title>
-    $title = htmlspecialchars($data_3[$id]['title']);
-} else {
-    // Utiliser un titre par défaut si le titre n'est pas trouvé dans le JSON
-    $title = "Titre par défaut";
-}
+phpinfo();
 ?>
 
 <!DOCTYPE html>

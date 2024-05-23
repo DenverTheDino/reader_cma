@@ -1,5 +1,6 @@
 <?php
-include_once 'functions.php'
+include_once'functions.php';
+
 
 
 ?>
@@ -16,11 +17,11 @@ include_once 'functions.php'
     <h2>Formulaire pour JSON</h2>
     <form action="formulaire.php" method="post" enctype="multipart/form-data">
         <label for="title">Titre :</label>
-        <input type="text" id="title" name="title">
-        <input type="submit" value="Soumettre">
+        <input type="text" id="title" name="title" required>
         <br><br>
-        <label for="file">Télécharger un fichier :</label>
-        <input type="file" id="file" name="file">
+        <label for="zip">Sélectionner un fichier ZIP :</label>
+        <input type="file" id="zip" name="zip" accept=".zip" required>
+        <br><br>
         <input type="submit" value="Télécharger">
     </form>
 </body>

@@ -1,23 +1,63 @@
 <?php 
 include_once 'functions.php';
-
-
-// Récupérer l'ID depuis l'URL
-$id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-
-// Récupérer les données JSON à partir du fichier data.json
-$data_3 = file_get_contents('data.json');
-$data_3 = json_decode($data_3, true);
-
-// Vérifier si l'ID correspond à une entrée dans le JSON
-if (isset($data[$id]['title'])) {
-    // Utiliser le titre pour définir la balise <title>
-    $title = htmlspecialchars($data_3[$id]['title']);
-} else {
-    // Utiliser un titre par défaut si le titre n'est pas trouvé dans le JSON
-    $title = "Titre par défaut";
+// Fonction pour récupérer les chemins des images dans un dossier avec extensions spécifiques
+function getImages($dir, $extensions = ['avif', 'webp']) {
+  $images = [];
+  if (is_dir($dir)) {
+      $files = scandir($dir);
+      foreach ($files as $file) {
+          $file_extension = pathinfo($file, PATHINFO_EXTENSION);
+          if (in_array($file_extension, $extensions)) {
+              $images[] = $dir . '/' . $file;
+          }
+      }
+  }
+  return $images;
 }
+
+// Extraire l'ID de l'URL
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+if ($id > 0) {
+  // Définir les chemins des dossiers
+  $pagesPath = "supports/$id/pages";
+  $thumbnailsPath = "supports/$id/thumbnails";
+
+  // Récupérer les images avec les extensions avif et webp
+  $images = getImages($pagesPath);
+  $thumbnails = getImages($thumbnailsPath);
+
+  // Encoder les chemins des images en JSON
+  $json_data = json_encode($images);
+  $json_data_2 = json_encode($thumbnails);
+} else {
+  // Gestion des cas où l'ID n'est pas valide
+  $json_data = json_encode([]);
+  $json_data_2 = json_encode([]);
+}
+// Fonction pour extraire le titre à partir d'un ID dans un fichier JSON
+function getTitleFromJson($id, $json_file) {
+  // Charger le contenu du fichier JSON
+  $json_data = file_get_contents($json_file);
+  // Décoder le JSON en tableau associatif
+  $data = json_decode($json_data, true);
+
+  // Rechercher l'entrée correspondant à l'ID donné
+  foreach ($data as $entry) {
+      if ($entry['id'] == $id) {
+          return $entry['title'];
+      }
+  }
+
+  // Retourner un titre par défaut si l'ID n'est pas trouvé
+  return "Titre inconnu";
+}
+// Exemple d'utilisation :
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$json_file = 'data.json';
+$title = getTitleFromJson($id, $json_file);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,7 +74,7 @@ if (isset($data[$id]['title'])) {
     <link rel="stylesheet" href="css/print.css" media="print">
     <link rel="stylesheet" href="css/cma-icones.css">
     <link rel="stylesheet" href="css/style.css">
-    <title><?php echo $pageTitre; ?></title>
+    <title><?php echo $title; ?></title>
 </head>
 <body id="body">
 <header class="header">
@@ -107,7 +147,7 @@ if (isset($data[$id]['title'])) {
                 <span id="pageNumber">
                 
                 </span> 
-            <br><?= $pageTitre; ?></h1> 
+            <br><?= $title; ?></h1> 
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -119,7 +159,7 @@ if (isset($data[$id]['title'])) {
         // Définir la variable imagesData avec les données des images AVIF
         var imagesData = <?= $json_data; ?>;
         // Définir la variable imagesData2 avec les données des images AVIF
-        var imagesData2 = <?=  $json_data_2; ?>;
+        var imagesData2 = <?= $json_data_2; ?>;
     </script>
 
     <!-- Inclure votre script JavaScript -->
