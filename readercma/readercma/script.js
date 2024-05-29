@@ -1,5 +1,3 @@
-
-
 // Déclaration de la variable pour le Swiper
 var mySwiper;
 
@@ -30,7 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
     mySwiper = new Swiper('.mySwiper.swiper-zoom-container',  {
         slidesPerGroup: 1,
         loop: true,
-        hashNavigation:true,
+        hashNavigation: {
+	watchState: true,
+	},
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             el: '.swiper-pagination',
             type: "progressbar",
         },
-        zoom:{
+        zoom: {
             maxRatio: 3,
             minRatio: 1,
         },
@@ -48,11 +48,20 @@ document.addEventListener('DOMContentLoaded', function() {
             slideChange: function() {
                 var currentSlideIndex = this.realIndex;
                 updatePageNumber(currentSlideIndex + 1, this.slides.length);
-                
+                history.pushState(null, null, '#slide' + (currentSlideIndex + 1));
             },
             init: function() {
                 // Mise à jour du numéro de page à l'initialisation
                 updatePageNumber(1, this.slides.length);
+
+                // Charger la diapositive en fonction de l'ancre dans l'URL
+                var hash = window.location.hash;
+                if (hash) {
+                    var slideNumber = parseInt(hash.replace('#slide', ''));
+                    if (!isNaN(slideNumber) && slideNumber > 0 && slideNumber <= this.slides.length) {
+                        this.slideTo(slideNumber - 1);
+                    }
+                }
             }
         },
         // Configuration des miniatures liées
@@ -60,6 +69,20 @@ document.addEventListener('DOMContentLoaded', function() {
             swiper: swiper2,
         },
     });
+
+    // Fonction pour vérifier périodiquement l'ancre dans l'URL et charger la diapositive correspondante
+    function checkHashAndUpdateSlide() {
+        var hash = window.location.hash;
+        if (hash) {
+            var slideNumber = parseInt(hash.replace('#slide', ''));
+            if (!isNaN(slideNumber) && slideNumber > 0 && slideNumber <= mySwiper.slides.length) {
+                mySwiper.slideTo(slideNumber - 1);
+            }
+        }
+    }
+
+    // Vérifier l'ancre dans l'URL toutes les 500 millisecondes
+    setInterval(checkHashAndUpdateSlide, 500);
 
     // Récupération du conteneur pour les slides du Swiper principal
     var swiperContainer = document.getElementById('swiper-wrapper');
@@ -87,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('imagesData n\'est pas un tableau valide.');
     }
 });
-
 // Récupération du conteneur pour les slides du deuxième Swiper
 var swiperContainer2 = document.querySelector('.mySwiper2 .swiper-wrapper');
 
@@ -231,6 +253,44 @@ sousMenuShare.addEventListener('mouseenter', function() {
     toggleBoutonsPartage(true);
 });
 
-sousMenuShare.addEventListener('mouseleave', function() {
-    toggleBoutonsPartage(false);
+// Écouteur d'événement pour le changement d'ancre dans l'URL
+window.addEventListener('hashchange', function() {
+    var hash = window.location.hash;
+    if (hash) {
+        var slideNumber = parseInt(hash.replace('#slide', ''));
+        if (!isNaN(slideNumber) && slideNumber > 0 && slideNumber <= mySwiper.slides.length) {
+            mySwiper.slideTo(slideNumber - 1);
+        }
+    }
+});
+
+// Fonction pour charger la diapositive en fonction de l'ancre dans l'URL lors de l'initialisation
+function loadSlideFromHash() {
+    var hash = window.location.hash;
+    if (hash) {
+        var slideNumber = parseInt(hash.replace('#slide', ''));
+        if (!isNaN(slideNumber) && slideNumber > 0 && slideNumber <= mySwiper.slides.length) {
+            mySwiper.slideTo(slideNumber - 1);
+        }
+    }
+}
+function getSlideNumberFromUrl() {
+    var hash = window.location.hash;
+    if (hash) {
+        // Trouver la chaîne qui commence par "slide" suivie d'un nombre
+        var match = hash.match(/slide(\d+)/);
+        if (match) {
+            // Extraire le numéro de diapositive du résultat de la correspondance
+            var slideNumber = parseInt(match[1]);
+            if (!isNaN(slideNumber)) {
+                return slideNumber;
+            }
+        }
+    }
+    return null; // Retourne null si aucun numéro de diapositive n'est trouvé dans l'URL
+}
+
+// Initialiser le chargement de la diapositive à partir de l'ancre lors du chargement du document
+document.addEventListener('DOMContentLoaded', function() {
+    loadSlideFromHash();
 });
