@@ -1,10 +1,14 @@
 [
     {
         "id": 1,
-        "title": "Rapport d'activit\u00e9 2023 "
+        "title": "Rapport d'activit\u00e9 2023"
     },
     {
         "id": 2,
-        "title": "Annuaires des m\u00e9tiers  d'arts"
+        "title": "Annuaires des m\u00e9tiers d'arts"
+    },
+    {
+        "id": 3,
+        "title": "loz\u00e8re gourmande 2023-2024"
     }
 ]

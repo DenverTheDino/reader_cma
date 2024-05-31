@@ -1,5 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
     // Récupère les données du formulaire
     $titre = $_POST['title'];
     $zipFile = $_FILES['zip']['tmp_name'];
@@ -80,11 +81,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Redimensionne les images dans le dossier "pages" et les sauvegarde dans le dossier "thumbnails"
     redimensionnerImages($cheminPages, $cheminThumbnails, 256);
 
-    echo "Le fichier ZIP a été téléchargé, décompressé, les images ont été converties en AVIF (ou WebP) et redimensionnées avec succès.";
+    echo "Le fichier ZIP a été téléchargé, décompressé, les images ont été converties en AVIF (ou WebP) et redimensionnées avec succès.Vous pouvez actualiser la page ";
+    // Redirection vers une autre page après un délai de 3 secondes
+    header("Location: index.php");
+    exit;
 }
 function renommerImages($cheminSources) {
     $fichiers = scandir($cheminSources);
     $index = 1;
+
+    // Création d'un tableau pour stocker les noms de fichiers avec leurs index numériques
+    $fichiersAvecIndex = [];
 
     foreach ($fichiers as $fichier) {
         $cheminFichier = $cheminSources . '/' . $fichier;
@@ -92,21 +99,28 @@ function renommerImages($cheminSources) {
 
         // Filtrer uniquement les fichiers d'image
         if (is_file($cheminFichier) && in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'])) {
-            // Formater le nouveau nom de fichier avec une numérotation séquentielle
-            $nouveauNom = sprintf("%03d", $index) . '.' . $extension;
+            // Extraire le numéro du fichier
+            $matches = [];
+            preg_match('/p(\d+)/', $fichier, $matches);
+            $numeroFichier = isset($matches[1]) ? intval($matches[1]) : 0;
 
-            // Chemin du nouveau fichier avec le nouveau nom
-            $cheminNouveauFichier = $cheminSources . '/' . $nouveauNom;
-
-            // Renommer le fichier
-            rename($cheminFichier, $cheminNouveauFichier);
-
-            // Incrémenter l'index pour le prochain fichier
-            $index++;
+            // Enregistrer le fichier avec son numéro dans le tableau
+            $fichiersAvecIndex[$numeroFichier] = $fichier;
         }
     }
-}
 
+    // Trier les fichiers par leur numéro
+    ksort($fichiersAvecIndex);
+
+    // Renommer les fichiers en utilisant l'index trié
+    foreach ($fichiersAvecIndex as $numero => $fichier) {
+        $extension = strtolower(pathinfo($fichier, PATHINFO_EXTENSION));
+        $nouveauNom = sprintf("p%03d.%s", $index, $extension); // Formatage avec trois chiffres et ajout de 'p'
+        $cheminNouveauFichier = $cheminSources . '/' . $nouveauNom;
+        rename($cheminSources . '/' . $fichier, $cheminNouveauFichier);
+        $index++;
+    }
+}
 
 function convertirJpegEnAvifOuWebp($cheminSources, $cheminPages) {
     // Vérifier si la fonction imageavif existe

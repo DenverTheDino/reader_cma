@@ -22,9 +22,7 @@ body,html{
   margin-top: 5px;
 }
 
-.header__banner-icon:hover{
-cursor:grab;
-}
+
 .header__banner-picto ul {
   list-style-type: none;
   display: flex;
@@ -37,7 +35,9 @@ cursor:grab;
   padding-top: 10px;
   padding-bottom: 10px;
 }
-
+.header__banner-picto li:hover{
+cursor: grab;
+}
 .dropdown-container {
   position: relative; /* Positionnement relatif pour le conteneur du menu déroulant */ 
   
@@ -244,6 +244,23 @@ cursor:grab;
   font-size: 7px;
   z-index: 999; /* Assurez-vous que le footer reste au-dessus des autres éléments */
 }
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card {
+    width: calc(33.33% - 20px); /* 3 cartes par ligne sur desktop */
+    margin-bottom: 20px;
+    margin-left: 20px;
+    text-align: center; /* Centrer le contenu */
+}
+
+.card img {
+    display: block; /* Pour éviter l'espace supplémentaire sous l'image */
+    margin: 0 auto; /* Centrer l'image */
+}
 
 
 
@@ -337,7 +354,14 @@ cursor:grab;
     margin-top: 10px;
     transition: height 0.3s ease, font-size 0.3s ease, margin 0.3s ease;
   }
+.card {
+    width: calc(100% - 40px);
+   
+    
 }
+
+}
+
 
 
 
@@ -369,6 +393,57 @@ cursor:grab;
     
     transition: font-size 0.3s ease, bottom 0.3s ease, right 0.3s ease, border 0.3s ease;
   }
+	.card {
+        width: calc(75% - 20px); /* 1 carte par ligne sur téléphone */
+    }
+
+}
+
+@media print {
+    /* Masquer tous les éléments sauf le slider actif et le footer */
+    body > * {
+        display: none;
+    }
+
+    /* Afficher le slider actif */
+    #swiper .swiper-slide-active {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: 100% !important; /* Ajustez la hauteur si nécessaire */
+    }
+
+    /* Afficher le footer */
+    .footer {
+        display: block !important;
+	color:black !important;
+    }
+
+    /* Masquer les miniatures et autres éléments */
+    .icon-miniatures,
+    .header {
+        display: none !important;
+    }
+
+    /* Masquer le deuxième Swiper */
+    .mySwiper2 {
+        display: none !important;
+    }
+
+    #swiper .swiper-slide-active img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: auto;
+    display: block; /* Assurez-vous que l'image est un élément de bloc */
+    margin: 0 auto; /* Centrez l'image horizontalement */
+}
+.swiper-button-next {
+  display: none;
+}
+.swiper-button-prev{
+  display: none;
 }
 
 
