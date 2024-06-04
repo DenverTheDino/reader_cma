@@ -193,7 +193,6 @@ if ($id > 0) {
                 <img src="<?php echo getFirstImage("supports/{$entry['id']}/thumbnails"); ?>" alt="Thumbnail">
                 <div class="card-content">
                     <h2><?php echo $entry['title']; ?></h2>
-                    <p><?php echo $entry['description']; ?></p>
                     <a href="index.php?id=<?php echo $entry['id']; ?>">Voir plus</a>
                 </div>
             </div>
