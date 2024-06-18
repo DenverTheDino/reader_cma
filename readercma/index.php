@@ -95,7 +95,11 @@ if ($id > 0) {
     
     <link rel="stylesheet" href="css/cma-icones.css">
     <link rel="stylesheet" href="css/style.css">
-    <title><?php echo $title; ?></title>
+    <?php if ($id > 0): ?>
+        <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
+    <?php else: ?>
+        <title>Page d'accueil</title>
+    <?php endif; ?>
 </head>
 <body id="body">
 <header class="header">
