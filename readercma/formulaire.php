@@ -11,7 +11,7 @@ include_once'functions.php';
     <title>Formulaire pour JSON</title>
     <script>
         function afficherMessageTelechargement() {
-            document.getElementById("message").innerText = "Téléchargement en cours...";
+            document.getElementById("message").innerText = "Téléchargement en cours, cela risque de prendre du temps si il y a beaucoup d'images dans le fichier ZIP veuillez patientez...";
         }
     </script>
 </head>
